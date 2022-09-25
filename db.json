@@ -1,0 +1,67 @@
+{
+  "books": [
+    {
+      "id": 1663225825455,
+      "name": "Bab-ı Esrar",
+      "author": "Ahmet Ümit",
+      "categoryId": "1",
+      "isbn": "11114",
+      "booklength": 1,
+      "bookImg": "https://img.kitapyurdu.com/v1/getImage/fn:10083426/wh:true/wi:220"
+    },
+    {
+      "id": 1663251689386,
+      "name": "Yaban",
+      "author": "Yakup Kadri Karaosmanoğlu",
+      "categoryId": "2",
+      "isbn": "11111",
+      "booklength": 2,
+      "bookImg": "https://img.kitapyurdu.com/v1/getImage/fn:11439037/wh:true/wi:220"
+    },
+    {
+      "id": 1663262262196,
+      "name": "Dervişin Teselli Koleksiyonu",
+      "author": "Mecit Ömür Öztürk",
+      "categoryId": "3",
+      "isbn": "11115",
+      "booklength": 3,
+      "bookImg": "https://img.kitapyurdu.com/v1/getImage/fn:3473517/wh:true/wi:220"
+    },
+    {
+      "id": 1664114820941,
+      "name": "Çiçek Senfonisi",
+      "author": "Özdemir Asaf",
+      "categoryId": "4",
+      "isbn": "354345",
+      "booklength": 4,
+      "bookImg": "https://img.kitapyurdu.com/v1/getImage/fn:11063/wh:true/wi:220"
+    },
+    {
+      "id": 1664117087898,
+      "name": "İlkGençlik Çağına Öyküler",
+      "author": "Selim İleri",
+      "categoryId": "2",
+      "isbn": "124123124",
+      "booklength": 5,
+      "bookImg": "https://img.kitapyurdu.com/v1/getImage/fn:11466678/wh:true/wi:220"
+    }
+  ],
+  "categories": [
+    {
+      "id": "1",
+      "name": "Roman"
+    },
+    {
+      "id": "2",
+      "name": "Hikaye"
+    },
+    {
+      "id": "3",
+      "name": "Deneme"
+    },
+    {
+      "id": "4",
+      "name": "Şiir"
+    }
+  ]
+}
