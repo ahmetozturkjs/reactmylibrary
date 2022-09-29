@@ -4,7 +4,7 @@ import {Dna} from "react-loader-spinner";
 
 const Header = () => {
   return (
-    <nav style={{height:"8vh",background: "linear-gradient(to bottom, #c31432, #240b36)"}} className="navbar navbar-expand-lg bg-light ">
+    <nav style={{height:"6vh",maxHeight:"6vh",background: "linear-gradient(to bottom, #c31432, #240b36)"}} className="navbar navbar-expand-lg bg-light ">
       <div className="container-fluid">
         <Link to="/" className="navbar-brand" href="#">
         <Dna

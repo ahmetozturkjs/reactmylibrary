@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer=()=>{
     return(
-        <div style={{height:"15vh", background: "linear-gradient(to bottom, #c31432, #240b36)"}} className="text-center py-1 text-white footerdiv">
+        <div style={{height:"13%",maxHeight:"13%", background: "linear-gradient(to bottom, #c31432, #240b36)"}} className="text-center py-1 text-white footerdiv">
             <div className="my-2">
                 <h5>Follow US</h5>
                 

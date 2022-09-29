@@ -3,41 +3,52 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import Loading from "./Loading";
 import Modal from "./Modal";
+import { useSelector } from "react-redux";
+import {useDispatch} from "react-redux"
+
+
 
 const KitapListesi = () => {
-  const [books, setBooks] = useState(null);
-  const [kategoriler, setKategoriler] = useState(null);
+const dispatch=useDispatch()
+
+  const {categoriesState}=useSelector((state)=>state)
+  const {booksState}=useSelector((state)=>state)
+
+  // const [books, setBooks] = useState(null);
+  // const [kategoriler, setKategoriler] = useState(null);
   const [tetikleyici, setTetikleyici] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [silinecekKitapId, setSilinecekKitapId] = useState(null);
   const [silinecekKitapIsim, setSilinecekKitapIsim] = useState(null);
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3004/books")
-      .then((res) => {
-        setBooks(res.data);
-        axios
-          .get("http://localhost:3004/categories")
-          .then((res) => {
-            setKategoriler(res.data);
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
-  }, [tetikleyici]);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3004/books")
+  //     .then((res) => {
+  //       setBooks(res.data);
+  //       axios
+  //         .get("http://localhost:3004/categories")
+  //         .then((res) => {
+  //           setKategoriler(res.data);
+  //         })
+  //         .catch((err) => console.log(err));
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, [tetikleyici]);
 
   const kitapSil = (id) => {
     console.log("çalıştı");
     console.log(id);
-    axios.delete(`http://localhost:3004/books/${id}`).then((res) => {
+    dispatch({type:"FETCH_BOOKS_DELETE",payload:id})
+    axios.delete(`http://localhost:3004/books/${id}`).then((res) => {      
       setTetikleyici(!tetikleyici);
       console.log("silindi");
       setShowModal(false);
     });
   };
-
-  if (books === null || kategoriler === null) {
+  console.log("çalıştı");
+  console.log(booksState,categoriesState);
+  if (booksState.success !== true || categoriesState.success !== true) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -66,8 +77,8 @@ const KitapListesi = () => {
           </tr>
         </thead>
         <tbody>
-          {books.map((kitap) => {
-            let kategori = kategoriler.find(
+          {booksState.books.map((kitap) => {
+            let kategori = categoriesState.categories.find(
               (kategori) => kategori.id === kitap.categoryId
             );
             return (

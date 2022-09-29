@@ -2,41 +2,53 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Modal from "./Modal";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 import Loading from "./Loading";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const KitapEkle = () => {
   const navigate = useNavigate();
-  const [kategori, setKategori] = useState(null);
+  const dispatch = useDispatch();
+
+  const { categoriesState } = useSelector((state) => state);
+  const { booksState } = useSelector((state) => state);
+
+  // const [kategori, setKategori] = useState(null);
   const [kitapAdı, setKitapAdı] = useState("");
   const [yazarAdı, setYazarAdı] = useState("");
   const [isbn, setIsbn] = useState("");
   const [secilenKategori, setSecilenKategori] = useState("");
   const [showModal, setShowModal] = useState(false);
-  const[kitapSayisi,setKitapSayisi]=useState("");
+  // const[kitapSayisi,setKitapSayisi]=useState("");
 
-  useEffect(() => {
-    axios
-      .get("http://localhost:3004/categories")
-      .then((res) => {
-        setKategori(res.data);
-        axios.get("http://localhost:3004/books")
-        .then((res)=>{
-          
-          let booklength=res.data.length;
-          console.log(booklength);
-          setKitapSayisi(booklength)
+  console.log(booksState.books.length);
 
-        })
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   axios
+  //     .get("http://localhost:3004/categories")
+  //     .then((res) => {
+  //       setKategori(res.data);
+  //       axios.get("http://localhost:3004/books")
+  //       .then((res)=>{
 
-  if (kategori === null) {
+  //         let booklength=res.data.length;
+  //         console.log(booklength);
+  //         setKitapSayisi(booklength)
+
+  //       })
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
+
+  if (categoriesState.success !== true) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{height:"100vh", fontSize:""}}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh", fontSize: "" }}
+      >
         <div>
-            <Loading/>
+          <Loading />
         </div>
       </div>
     );
@@ -44,11 +56,10 @@ const KitapEkle = () => {
 
   const Kaydet = (event) => {
     event.preventDefault();
-    setShowModal(true)
-    
+    setShowModal(true);
   };
 
-  const KitapEkleFonk=()=>{
+  const KitapEkleFonk = () => {
     if (kitapAdı === "" || yazarAdı === "" || secilenKategori === "") {
       alert("boş geçemezsiniz");
       return;
@@ -60,8 +71,11 @@ const KitapEkle = () => {
       author: yazarAdı,
       categoryId: secilenKategori,
       isbn: isbn,
-      booklength:kitapSayisi+1,
+      booklength: booksState.books.length + 1,
     };
+
+    dispatch({type:"FETCH_BOOKS_ADD",payload:yeniKitap})
+
     axios.post("http://localhost:3004/books", yeniKitap).then((res) => {
       console.log("gönderildi");
     });
@@ -69,7 +83,7 @@ const KitapEkle = () => {
     console.log("tiklandı");
 
     navigate("/");
-  }
+  };
 
   return (
     <div className="container my-5 w-50">
@@ -120,7 +134,6 @@ const KitapEkle = () => {
             aria-describedby="inputGroup-sizing-default"
             value={isbn}
             onChange={(event) => setIsbn(event.target.value)}
-            
           />
         </div>
         <select
@@ -131,7 +144,7 @@ const KitapEkle = () => {
         >
           <option>Kategori Seçiniz</option>
 
-          {kategori.map((kat) => {
+          {categoriesState.categories.map((kat) => {
             return (
               <option key={kat.id} value={kat.id}>
                 {kat.name}
@@ -143,12 +156,19 @@ const KitapEkle = () => {
           <button type="submit" className="btn btn-outline-success mx-2">
             Save
           </button>
-          <Link to="/"  className="btn btn-outline-warning mx-2">
+          <Link to="/" className="btn btn-outline-warning mx-2">
             Cancel
           </Link>
         </div>
       </form>
-      {showModal === true && <Modal title={kitapAdı} question={`${kitapAdı} will be save, are you sure?`} onConfirm={()=>KitapEkleFonk()} onCancel={()=>setShowModal(false)}/>}
+      {showModal === true && (
+        <Modal
+          title={kitapAdı}
+          question={`${kitapAdı} will be save, are you sure?`}
+          onConfirm={() => KitapEkleFonk()}
+          onCancel={() => setShowModal(false)}
+        />
+      )}
     </div>
   );
 };

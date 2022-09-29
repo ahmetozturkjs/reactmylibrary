@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Loading from "./Loading";
+import "../index.css"
 
 const BookDetail = (id) => {
   const params=useParams();
@@ -43,7 +44,7 @@ const BookDetail = (id) => {
   }
 
   return (
-    <div style={{width:"50%",overflowY:"hidden"}} className=" container   componentbackground">
+    <div style={{width:"50%",overflowY:"hidden",maxHeight: "75vh",height:"75vh"}} className=" container componentbackground">
       <table className="table table-hover table-bordered ">
         <thead>
          

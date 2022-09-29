@@ -34,6 +34,7 @@ body{
   height: 100%;
   width: 100%;
   background: url("../assets/images/pngwing.com.png");
+  opacity: 0.3;
   background-repeat: no-repeat;
   background-size: 300px;
   z-index: -2;
@@ -43,7 +44,7 @@ body{
 
 
   .componentbackground{
-    max-height: 77vh;
+
     overflow-y: auto;
    
   }

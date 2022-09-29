@@ -5,10 +5,15 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Modal from "./Modal";
 import Loading from "./Loading";
+import { useSelector,useDispatch } from "react-redux";
 
 const KitapDuzenle = (id) => {
   const params = useParams();
   const navigate = useNavigate();
+  const dispatch=useDispatch()
+
+  const{booksState}=useSelector(state=>state)
+  const {categoriesState}=useSelector(state=>state)
 
   const [kategori, setKategori] = useState(null);
   const [kitapAdı, setKitapAdı] = useState("");
@@ -20,25 +25,24 @@ const KitapDuzenle = (id) => {
   const [bookLength, setBookLength] = useState("");
   const [bookImage, setBookImage] = useState("");
 
+
+  
   useEffect(() => {
-    axios
-      .get(`http://localhost:3004/books/${params.kitapID}`)
-      .then((res) => {
-        setKitapAdı(res.data.name);
-        setYazarAdı(res.data.author);
-        setIsbn(res.data.isbn);
-        setSecilenKategori(res.data.categoryId);
-        setBookLength(res.data.booklength);
-        setBookImage(res.data.bookImg)
-        console.log(res.data.categoryId);
-        axios
-          .get("http://localhost:3004/categories")
-          .then((res) => {
-            setKategori(res.data);
-          })
-          .catch((err) => console.log(err));
-      })
-      .catch((err) => console.log(err));
+    
+      let editbook=booksState.books.find((book)=>book.id==params.kitapID)
+      if (editbook==undefined){
+        navigate("/")
+      }   
+      setKitapAdı(editbook.name);
+        setYazarAdı(editbook.author);
+        setIsbn(editbook.isbn);
+        setSecilenKategori(editbook.categoryId);
+        setBookLength(editbook.booklength);
+        setBookImage(editbook.bookImg)
+        console.log(editbook.categoryId);
+
+        
+ 
   }, []);
 
   const Kaydet = (event) => {
@@ -55,25 +59,26 @@ const KitapDuzenle = (id) => {
       return;
     }
 
-    const uptateBook = {
+    const updateBook = {
       id: params.kitapID,
       name: kitapAdı,
       author: yazarAdı,
       categoryId: secilenKategori,
       isbn: isbn,
       booklength: bookLength,
-      bookImg: bookImage
+      bookImg: bookImage,
     };
     axios
-      .put(`http://localhost:3004/books/${params.kitapID}`, uptateBook)
+      .put(`http://localhost:3004/books/${params.kitapID}`, updateBook)
       .then((res) => {
+        dispatch({type:"FETCH_BOOKS_EDIT",payload:updateBook})
         console.log("gönderildi");
         setShowModal(false);
         navigate("/");
       })
       .catch((err) => console.log(err));
   };
-  if (kategori === null) {
+  if (categoriesState.success !== true) {
     return (
       <div
         className="d-flex justify-content-center align-items-center"
@@ -161,7 +166,7 @@ const KitapDuzenle = (id) => {
         >
           <option value={""}>Kategori Seçiniz</option>
 
-          {kategori.map((kat) => {
+          {categoriesState.categories.map((kat) => {
             return (
               <option key={kat.id} value={kat.id}>
                 {kat.name}
